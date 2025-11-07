@@ -17,7 +17,7 @@ running = True
 background = make_background()
 
 # make a player
-player = Player(100,HEIGHT//2)
+player = Player(25,250)
 
 ############### TESTING ZONE #######################
 
@@ -34,7 +34,7 @@ while running:
 
 
     # update all of our things
-    player.update()
+    #player.update()
 
     # draw background
     screen.blit(background,(0,0))

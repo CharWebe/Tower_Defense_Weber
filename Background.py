@@ -58,7 +58,7 @@ def make_background():
         background.blit(big_tree_tile,(x,y))
 
     #place turret base
-    background.blit(turret_base_tile,(100,HEIGHT//2))
+    background.blit(turret_base_tile,(25,270))
 
 
     # return the background surface
