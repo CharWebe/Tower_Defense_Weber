@@ -58,7 +58,7 @@ def make_background():
         background.blit(big_tree_tile,(x,y))
 
     #place turret base
-    background.blit(turret_base_tile,(25,270))
+    #background.blit(pygame.transform.rotozoom(turret_base_tile, 0,0.8),(25,260))
 
 
     # return the background surface

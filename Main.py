@@ -4,6 +4,7 @@ from random import randint
 from System import *
 from Background import make_background
 from Player import Player
+from Text import Text
 
 # pygame setup
 pygame.init()
@@ -17,7 +18,10 @@ running = True
 background = make_background()
 
 # make a player
-player = Player(25,250)
+player = Player(100,335)
+
+# make our title / text instance
+text = Text()
 
 ############### TESTING ZONE #######################
 
@@ -38,6 +42,8 @@ while running:
 
     # draw background
     screen.blit(background,(0,0))
+
+    text.draw(screen)
 
     # RENDER YOUR GAME HERE
     player.draw(screen)

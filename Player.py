@@ -5,18 +5,21 @@ import math
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, posx, posy):
+        self.posx = posx
+        self.posy = posy
+        self.score = 0
         pygame.sprite.Sprite.__init__(self) # init the sprite class
         #load the card image and set its rect attribute.
-        self.base_image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile249.png')
+        self.base_image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile249.png').convert_alpha()
+        #self.image = self.base_image.convert_alpha()
         self.rect = self.base_image.get_rect() 
 
         #Where card starts 
-        self.rect.x = posx
-        self.rect.y = posy
+        self.rect.center = (posx,posy)
 
         self.vx = 0
         self.vy = 0
-        self.theta= 90 # rad
+        self.theta= 270 # rad
                 
     
     def check_event(self, event):
@@ -25,12 +28,12 @@ class Player(pygame.sprite.Sprite):
             # we got a keydown event
             # check and see if it was W key
             if event.key == pygame.K_w:
-                self.theta += 2
+                self.theta += 10
                 # player goes up
             # check and see if it was a S key
             if event.key == pygame.K_s:
                 # player goes down
-                self.theta  += -2
+                self.theta  += -10
     
     def draw(self, screen):
         # update our image with rotation
@@ -43,5 +46,7 @@ class Player(pygame.sprite.Sprite):
         """
         #self.image = pygame.transform.rotozoom(self.image)#,math.degrees(self.theta),1)
         #self.rect = self.image.get_rect(center=self.rect.center)
-        self.image = pygame.transform.rotozoom(self.image, self.theta,1)
-        screen.blit(self.image, self.rect)
+        self.rotated_image = pygame.transform.rotozoom(self.base_image, self.theta,1.2)
+        self.rect = self.rotated_image.get_rect()
+        self.rect.center = (self.posx,self.posy)
+        screen.blit(self.rotated_image, self.rect)
