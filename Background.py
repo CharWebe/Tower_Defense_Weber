@@ -15,6 +15,10 @@ def make_background():
     small_rock_location = 'kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile135.png'
     small_rock_tile = pygame.image.load(small_rock_location)
 
+    #turret bae
+    turret_base_location = 'kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile181.png'
+    turret_base_tile = pygame.image.load(turret_base_location)
+
     #Maybe add these later
     """
     #small tree
@@ -52,6 +56,9 @@ def make_background():
         y = randint(0,HEIGHT)
         # blit that seaweed
         background.blit(big_tree_tile,(x,y))
+
+    #place turret base
+    background.blit(turret_base_tile,(100,HEIGHT//2))
 
 
     # return the background surface

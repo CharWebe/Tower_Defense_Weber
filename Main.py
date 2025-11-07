@@ -3,6 +3,7 @@ import pygame
 from random import randint
 from System import *
 from Background import make_background
+from Player import Player
 
 # pygame setup
 pygame.init()
@@ -15,6 +16,9 @@ running = True
 # make background
 background = make_background()
 
+# make a player
+player = Player(100,HEIGHT//2)
+
 ############### TESTING ZONE #######################
 
 ####################################################
@@ -25,9 +29,19 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        # pass the event to our player
+        player.check_event(event)
+
+
+    # update all of our things
+    player.update()
 
     # draw background
     screen.blit(background,(0,0))
+
+    # RENDER YOUR GAME HERE
+    player.draw(screen)
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()
