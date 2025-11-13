@@ -42,7 +42,7 @@ def make_background():
             background.blit(sand_tile, (x,y))
 
     #randomly place a rock
-    num_rocks = 1
+    num_rocks = 3
     for i in range(num_rocks):
         x = randint(200,WIDTH-100)
         y = randint(100,HEIGHT-200)
@@ -50,7 +50,7 @@ def make_background():
         background.blit(small_rock_tile,(x,y))
 
     #randomly place some trees
-    num_trees = 2
+    num_trees = 0
     for i in range(num_trees):
         x = randint(100,WIDTH)
         y = randint(0,HEIGHT)

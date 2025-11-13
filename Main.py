@@ -3,8 +3,9 @@ import pygame
 from random import randint
 from System import *
 from Background import make_background
-from Player import Player
+from Player import tank
 from Text import Text
+from Bullet import *
 
 # pygame setup
 pygame.init()
@@ -18,7 +19,7 @@ running = True
 background = make_background()
 
 # make a player
-player = Player(100,335)
+tank = tank(100,335)
 
 # make our title / text instance
 text = Text()
@@ -34,7 +35,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         # pass the event to our player
-        player.check_event(event)
+        tank.check_event(event)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                # shoot a shell
+                tank.shoot()
 
 
     # update all of our things
@@ -43,10 +48,13 @@ while running:
     # draw background
     screen.blit(background,(0,0))
 
+    dt = clock.tick(60) /1000  # limits FPS to 60
+
+    tank.update()
     text.draw(screen)
 
     # RENDER YOUR GAME HERE
-    player.draw(screen)
+    tank.draw(screen)
 
 
     # flip() the display to put your work on screen
