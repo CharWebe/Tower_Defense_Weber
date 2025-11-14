@@ -6,6 +6,7 @@ from Background import make_background
 from Player import tank
 from Text import Text
 from Bullet import *
+from Enemy import EnemySoldier
 
 # pygame setup
 pygame.init()
@@ -18,8 +19,16 @@ running = True
 # make background
 background = make_background()
 
+#Enemy sprite group
+enemy_group = pygame.sprite.Group()
+
 # make a player
 tank = tank(100,335)
+
+#Make enemy soldiers
+num_enemies = 3
+for i in range(num_enemies):
+    enemy_group.add(EnemySoldier(tank))
 
 # make our title / text instance
 text = Text()
@@ -52,10 +61,11 @@ while running:
 
     tank.update()
     text.draw(screen)
+    enemy_group.update()
 
     # RENDER YOUR GAME HERE
     tank.draw(screen)
-
+    enemy_group.draw(screen)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
