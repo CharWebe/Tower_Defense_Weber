@@ -2,12 +2,14 @@ import pygame
 from math import sin, cos, radians
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y, t):
+    def __init__(self, x, y, t, enemy_group, cannon_rect):
         # init the sprite
         super().__init__()
         self.x = x
         self.y = y
         self.theta = t
+        self.enemy_group = enemy_group
+        self.cannon_rect = cannon_rect
         self.bulletspeed = 50
 
         self.bulletvx =  self.bulletspeed * cos(radians(self.theta))
@@ -24,5 +26,11 @@ class Bullet(pygame.sprite.Sprite):
         self.y += self.bulletvy
         self.rect.center = (self.x, self.y)
 
+        colliding_enemy = pygame.sprite.spritecollide(self,self.enemy_group,0)
+        # check and see if a collision occured
+        if colliding_enemy:
+            for f in colliding_enemy:
+                pygame.sprite.Sprite.kill(f)
+
     def draw(self,screen):
-        screen.blit(self.image, self.rect.midright)
+        screen.blit(self.image, self.cannon_rect.midright)

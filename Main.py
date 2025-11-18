@@ -7,6 +7,7 @@ from Player import tank
 from Text import Text
 from Bullet import *
 from Enemy import EnemySoldier
+from Button import Button
 
 # pygame setup
 pygame.init()
@@ -23,7 +24,7 @@ background = make_background()
 enemy_group = pygame.sprite.Group()
 
 # make a player
-tank = tank(100,335)
+tank = tank(100,335,enemy_group)
 
 #Make enemy soldiers
 num_enemies = 3
@@ -32,8 +33,11 @@ for i in range(num_enemies):
 
 # make our title / text instance
 text = Text()
+play_button = Button(screen, "Play")
+game_active = False
 
 ############### TESTING ZONE #######################
+
 
 ####################################################
 
@@ -49,13 +53,21 @@ while running:
             if event.key == pygame.K_SPACE:
                 # shoot a shell
                 tank.shoot()
-
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if play_button.rect.collidepoint(mouse_pos):
+                game_active = True
+    
+    
 
     # update all of our things
     #player.update()
 
     # draw background
     screen.blit(background,(0,0))
+
+    if game_active == False:
+        play_button.draw_button()
 
     dt = clock.tick(60) /1000  # limits FPS to 60
 
@@ -64,8 +76,9 @@ while running:
     enemy_group.update()
 
     # RENDER YOUR GAME HERE
-    tank.draw(screen)
-    enemy_group.draw(screen)
+    if game_active:
+        tank.draw(screen)
+        enemy_group.draw(screen)
 
     # flip() the display to put your work on screen
     pygame.display.flip()

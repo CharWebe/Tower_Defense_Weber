@@ -1,16 +1,16 @@
 import pygame
 from System import *
-from random import randint
 from math import cos, sin, radians
 from Bullet import *
 
 class tank(pygame.sprite.Sprite):
-    def __init__(self, posx, posy):
+    def __init__(self, posx, posy, enemy_group):
         # init the sprite
         super().__init__()
         self.posx = posx
         self.posy = posy
         self.score = 0
+        self.enemy_group = enemy_group
         pygame.sprite.Sprite.__init__(self) # init the sprite class
         #load the card image and set its rect attribute.
         self.cannon_image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile291.png').convert_alpha()
@@ -39,7 +39,10 @@ class tank(pygame.sprite.Sprite):
 
     def shoot(self):
         # a new shell is created, and added to shell group
-        new_bullet = Bullet(self.posx,self.posy,self.cannon_theta)
+        self.fire_image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile298.png').convert_alpha()
+        self.fire_rect = self.fire_image.get_rect() 
+        self.tank_rect.center = (self.posx,self.posy)
+        new_bullet = Bullet(self.posx,self.posy,self.cannon_theta,self.enemy_group,self.cannon_rect)
         self.bullet_group.add(new_bullet)       
     
     def check_event(self, event):
@@ -54,6 +57,7 @@ class tank(pygame.sprite.Sprite):
             if event.key == pygame.K_s:
                 # cannon rotates down
                 self.cannon_theta  += -30
+
             if event.key == pygame.K_DOWN:
                 self.tank_theta += -30
             if event.key == pygame.K_UP:
