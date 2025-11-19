@@ -3,6 +3,12 @@ from random import randint
 from System import *
 
 def make_background():
+    b_image = 'kenney_tower-defense-top-down/Tank_background2.png'
+    b = pygame.image.load(b_image)
+    background = pygame.Surface((WIDTH,HEIGHT))
+    background.blit(b,(0,0))
+    return background
+    """
     #tiled sand background
     sand_tile_location = 'kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile029.png'
     sand_tile = pygame.image.load(sand_tile_location)
@@ -63,3 +69,4 @@ def make_background():
 
     # return the background surface
     return background
+    """

@@ -1,3 +1,3 @@
 # make screen properties
-WIDTH = 1000
-HEIGHT = 650
+WIDTH = 900
+HEIGHT = 600

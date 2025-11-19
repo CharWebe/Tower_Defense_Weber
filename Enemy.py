@@ -11,9 +11,9 @@ class EnemySoldier(pygame.sprite.Sprite):
         self.vy = randint(-1,1)
         self.x = WIDTH+100
         self.y = randint(0,HEIGHT)
-        self.image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile248.png')
+        self.image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile245.png')
         self.image =  pygame.transform.flip(self.image, 1, 0)
-        self.image = pygame.transform.rotozoom(self.image, 0, .75)
+        self.image = pygame.transform.rotozoom(self.image, 0, .4)
         self.rect = self.image.get_rect()
         self.theta = 0 # angle to player in radians
         self.speed = randint(1,3)  # speed to follow player

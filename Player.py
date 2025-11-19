@@ -27,65 +27,49 @@ class tank(pygame.sprite.Sprite):
 
         self.cannon_theta= 0 # rad
         self.tank_theta = 0
-        self.vx = 0
-        self.vy = 0
-        self.xspeed = 0
-        self.yspeed = 0
+        self.speed = 2
 
-    def update(self):
-        self.posx += self.vx
-        self.posy += self.vy  
+    def update(self, keys):  
+        if keys[pygame.K_w] and keys[pygame.K_a]:
+            self.posy += -self.speed
+            self.posx += -self.speed
+            self.tank_theta = 135
+        elif keys[pygame.K_w] and keys[pygame.K_d]:
+            self.posy += -self.speed
+            self.posx += self.speed
+            self.tank_theta = 45
+        elif keys[pygame.K_w]:
+            self.posy += -self.speed
+            self.tank_theta = 90
+        elif keys[pygame.K_s] and keys[pygame.K_d]:
+            self.posy += self.speed
+            self.posx += self.speed
+            self.tank_theta = 315
+        elif keys[pygame.K_s] and keys[pygame.K_a]:
+            self.posy += self.speed
+            self.posx += -self.speed
+            self.tank_theta = 225
+        elif keys[pygame.K_d]:
+            self.posx += self.speed
+            self.tank_theta = 0
+        elif keys[pygame.K_s]:
+            self.posy += self.speed
+            self.tank_theta = 270
+        elif keys[pygame.K_a]:
+            self.posx += -self.speed
+            self.tank_theta = 180
+        
+        if keys[pygame.K_UP]:
+            self.cannon_theta += 10
+        if keys[pygame.K_DOWN]:
+            self.cannon_theta  += -10       
         self.bullet_group.update()
 
     def shoot(self):
-        # a new shell is created, and added to shell group
-        self.fire_image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile298.png').convert_alpha()
-        self.fire_rect = self.fire_image.get_rect() 
+        # a new shell is created, and added to shell group 
         self.tank_rect.center = (self.posx,self.posy)
         new_bullet = Bullet(self.posx,self.posy,self.cannon_theta,self.enemy_group,self.cannon_rect)
         self.bullet_group.add(new_bullet)       
-    
-    def check_event(self, event):
-        # pass an event and check for key moves
-        if event.type == pygame.KEYDOWN:
-            # we got a keydown event
-            # check and see if it was W key
-            if event.key == pygame.K_w:
-                self.cannon_theta += 30
-                # cannon rotates up
-            # check and see if it was a S key
-            if event.key == pygame.K_s:
-                # cannon rotates down
-                self.cannon_theta  += -30
-
-            if event.key == pygame.K_DOWN:
-                self.tank_theta += -30
-            if event.key == pygame.K_UP:
-                self.tank_theta += 30
-
-            if event.key == pygame.K_LEFT:
-                if self.xspeed > -2.1:
-                    self.xspeed += -1
-                if self.yspeed < 2.1:
-                    self.yspeed += 1
-
-            if event.key == pygame.K_RIGHT:
-                if self.xspeed < 2.1:
-                    self.xspeed += 1
-                if self.yspeed > -2.1:
-                    self.yspeed += -1
-
-        self.vx = self.xspeed * cos(radians(self.tank_theta))
-        self.vy = self.yspeed * sin(radians(self.tank_theta))
-        """
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                self.vx = 0
-                self.vy = 0
-            if event.key == pygame.K_RIGHT:
-                self.vx = 0
-                self.vy = 0
-        """
     
     def draw(self, screen):
         # update our image with rotation
@@ -97,10 +81,10 @@ class tank(pygame.sprite.Sprite):
         """
         #self.image = pygame.transform.rotozoom(self.image)#,math.degrees(self.cannon_theta),1)
         #self.rect = self.image.get_rect(center=self.rect.center)
-        self.rotated_cannon_image = pygame.transform.rotate(self.cannon_image, self.cannon_theta)
+        self.rotated_cannon_image = pygame.transform.rotozoom(self.cannon_image, self.cannon_theta,.5)
         self.cannon_rect = self.rotated_cannon_image.get_rect()
         self.cannon_rect.center = (self.posx,self.posy)
-        self.rotated_tank_image = pygame.transform.rotate(self.tank_image, self.tank_theta)
+        self.rotated_tank_image = pygame.transform.rotozoom(self.tank_image, self.tank_theta,.5)
         self.tank_rect = self.rotated_tank_image.get_rect()
         self.tank_rect.center = (self.posx,self.posy)
         screen.blit(self.rotated_tank_image,self.tank_rect)

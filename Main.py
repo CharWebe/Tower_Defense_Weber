@@ -27,7 +27,7 @@ enemy_group = pygame.sprite.Group()
 tank = tank(100,335,enemy_group)
 
 #Make enemy soldiers
-num_enemies = 3
+num_enemies = 20
 for i in range(num_enemies):
     enemy_group.add(EnemySoldier(tank))
 
@@ -47,16 +47,17 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        # pass the event to our player
-        tank.check_event(event)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if play_button.rect.collidepoint(mouse_pos):
+                game_active = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 # shoot a shell
                 tank.shoot()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos()
-            if play_button.rect.collidepoint(mouse_pos):
-                game_active = True
+
+    keys = pygame.key.get_pressed()
+    tank.update(keys)
     
     
 
@@ -71,7 +72,6 @@ while running:
 
     dt = clock.tick(60) /1000  # limits FPS to 60
 
-    tank.update()
     text.draw(screen)
     enemy_group.update()
 

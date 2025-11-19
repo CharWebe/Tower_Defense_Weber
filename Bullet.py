@@ -11,12 +11,13 @@ class Bullet(pygame.sprite.Sprite):
         self.enemy_group = enemy_group
         self.cannon_rect = cannon_rect
         self.bulletspeed = 50
+        missile_image = 'kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile251.png'
 
         self.bulletvx =  self.bulletspeed * cos(radians(self.theta))
         self.bulletvy = -self.bulletspeed * sin(radians(self.theta))
 
-        self.image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile251.png')
-        self.image = pygame.transform.rotozoom(self.image, self.theta - 90, 0.5)
+        self.image = pygame.image.load(missile_image)
+        self.image = pygame.transform.rotozoom(self.image, self.theta - 90, 0.3)
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
 
