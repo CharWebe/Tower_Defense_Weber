@@ -4,7 +4,7 @@ from math import cos, sin, radians
 from Bullet import *
 
 class tank(pygame.sprite.Sprite):
-    def __init__(self, posx, posy, enemy_group):
+    def __init__(self, posx, posy, enemy_group, fire_group):
         # init the sprite
         super().__init__()
         self.posx = posx
@@ -18,6 +18,9 @@ class tank(pygame.sprite.Sprite):
         #self.image = self.base_image.convert_alpha()
         self.cannon_rect = self.cannon_image.get_rect() 
         self.tank_rect = self.tank_image.get_rect()
+        self.rect = self.tank_rect
+
+        self.fire_group = fire_group
 
         self.bullet_group = pygame.sprite.Group()
 
@@ -29,7 +32,7 @@ class tank(pygame.sprite.Sprite):
         self.tank_theta = 0
         self.speed = 2
 
-    def update(self, keys):  
+    def update(self, keys, text, health_bar):  
         if keys[pygame.K_w] and keys[pygame.K_a]:
             self.posy += -self.speed
             self.posx += -self.speed
@@ -63,12 +66,21 @@ class tank(pygame.sprite.Sprite):
             self.cannon_theta += 10
         if keys[pygame.K_DOWN]:
             self.cannon_theta  += -10       
-        self.bullet_group.update()
+        self.bullet_group.update(text)
+        self.rect.center = (self.posx, self.posy)
+
+        colliding_enemy = pygame.sprite.spritecollide(self,self.enemy_group,0)
+        # check and see if a collision occured
+        if colliding_enemy:
+            if health_bar.updatehealth() == False:
+                self.kill()
+            for enemy in colliding_enemy:
+                enemy.kill()
 
     def shoot(self):
         # a new shell is created, and added to shell group 
         self.tank_rect.center = (self.posx,self.posy)
-        new_bullet = Bullet(self.posx,self.posy,self.cannon_theta,self.enemy_group,self.cannon_rect)
+        new_bullet = Bullet(self.posx,self.posy,self.cannon_theta,self.enemy_group,self.cannon_rect,self.fire_group)
         self.bullet_group.add(new_bullet)       
     
     def draw(self, screen):

@@ -1,8 +1,10 @@
 import pygame
 from math import sin, cos, radians
+from fire import Fire
+from Text import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y, t, enemy_group, cannon_rect):
+    def __init__(self, x, y, t, enemy_group, cannon_rect, fire_group):
         # init the sprite
         super().__init__()
         self.x = x
@@ -20,8 +22,9 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.transform.rotozoom(self.image, self.theta - 90, 0.3)
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
+        self.fire_group = fire_group
 
-    def update(self):
+    def update(self,text):
         # put in equations of motion for the shell
         self.x += self.bulletvx
         self.y += self.bulletvy
@@ -30,8 +33,16 @@ class Bullet(pygame.sprite.Sprite):
         colliding_enemy = pygame.sprite.spritecollide(self,self.enemy_group,0)
         # check and see if a collision occured
         if colliding_enemy:
+            self.kill()
             for f in colliding_enemy:
+                collision_pos = self.rect.center
                 pygame.sprite.Sprite.kill(f)
+                new_fire = Fire(collision_pos)
+                self.fire_group.add(new_fire)
+                text.update_score()
+            
+
+
 
     def draw(self,screen):
         screen.blit(self.image, self.cannon_rect.midright)

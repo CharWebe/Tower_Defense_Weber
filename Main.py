@@ -8,6 +8,7 @@ from Text import Text
 from Bullet import *
 from Enemy import EnemySoldier
 from Button import Button
+from HealthBar import HealthBar
 
 # pygame setup
 pygame.init()
@@ -20,20 +21,25 @@ running = True
 # make background
 background = make_background()
 
-#Enemy sprite group
+#Sprite groups
+player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
+fire_group = pygame.sprite.Group()
 
 # make a player
-tank = tank(100,335,enemy_group)
+tank = tank(100,335,enemy_group,fire_group)
+player_group.add(tank)
 
 #Make enemy soldiers
-num_enemies = 20
+num_enemies = 50
 for i in range(num_enemies):
     enemy_group.add(EnemySoldier(tank))
 
 # make our title / text instance
+score = 0
 text = Text()
-play_button = Button(screen, "Play")
+health_bar = HealthBar()
+play_button = Button(screen, "Wave 1")
 game_active = False
 
 ############### TESTING ZONE #######################
@@ -57,7 +63,7 @@ while running:
                 tank.shoot()
 
     keys = pygame.key.get_pressed()
-    tank.update(keys)
+    player_group.update(keys, text, health_bar)
     
     
 
@@ -73,12 +79,19 @@ while running:
     dt = clock.tick(60) /1000  # limits FPS to 60
 
     text.draw(screen)
-    enemy_group.update()
+    health_bar.draw(screen)
 
     # RENDER YOUR GAME HERE
+    for t in player_group:
+        t.draw(screen)
     if game_active:
-        tank.draw(screen)
-        enemy_group.draw(screen)
+        for enemy in enemy_group:
+            enemy.update()
+            enemy.draw(screen)
+        for f in fire_group:
+            f.update()
+            f.draw(screen)
+        text.draw(screen)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
