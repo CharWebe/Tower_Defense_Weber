@@ -61,6 +61,14 @@ class tank(pygame.sprite.Sprite):
         elif keys[pygame.K_a]:
             self.posx += -self.speed
             self.tank_theta = 180
+        if self.posy < 0:
+            self.posy = 10
+        if self.posy > HEIGHT:
+            self.posy = HEIGHT - 10
+        if self.posx < 0:
+            self.posx = 10
+        if self.posx > WIDTH:
+            self.posx = WIDTH - 10
         
         if keys[pygame.K_UP]:
             self.cannon_theta += 10
@@ -73,7 +81,12 @@ class tank(pygame.sprite.Sprite):
         # check and see if a collision occured
         if colliding_enemy:
             if health_bar.updatehealth() == False:
+                collision_pos = self.rect.center
+                new_fire = Fire(collision_pos,.7)
+                self.fire_group.add(new_fire)
                 self.kill()
+                for enemy in self.enemy_group:
+                    enemy.kill()
             for enemy in colliding_enemy:
                 enemy.kill()
 

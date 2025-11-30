@@ -8,15 +8,41 @@ from Bullet import *
 class EnemySoldier(pygame.sprite.Sprite):
     def __init__(self, player):
         pygame.sprite.Sprite.__init__(self)
-        self.vx = random.uniform(-1,1)
-        self.vy = random.uniform(-1,1)
-        self.x = WIDTH+100
-        self.y = random.uniform(0,HEIGHT)
+        #init velocity values
+        self.vx = 0
+        self.vy = 0
+
+        #set spawn point to random postion on perimeter
+        side = random.randint(1,4)
+        if side == 1:
+            self.x = -100
+            self.y = random.uniform(0,HEIGHT)
+        elif side == 2:
+            self.x = random.uniform(0,WIDTH)
+            self.y = -100
+        elif side == 3:
+            self.x = WIDTH+100
+            self.y = random.uniform(0,HEIGHT)
+        elif side == 4:
+            self.x = random.uniform(0,WIDTH)
+            self.y = HEIGHT+100
+
+        #init image
         self.original_image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile245.png')
+        self.upgraded_image = pygame.image.load('kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile248.png')
         self.image = self.original_image
         self.rect = self.image.get_rect()
-        self.speed = random.uniform(1,3)  # speed to follow player
+
+        #variables
+        self.speed = random.uniform(1,2)
         self.player = player
+        self.hitpoints = 1
+
+    def upgrade(self):
+        #function to upgrade enemy making difficulty harder
+        self.image = self.upgraded_image
+        self.rect = self.image.get_rect()
+        self.hitpoints = 3
 
     def get_theta(self):
         # calculate the theta in radians to the player
@@ -25,7 +51,6 @@ class EnemySoldier(pygame.sprite.Sprite):
 
         # take atan2
         self.theta = atan2(delta_y , delta_x)
-
 
     def update(self):
         # update our theta
@@ -42,10 +67,9 @@ class EnemySoldier(pygame.sprite.Sprite):
         # update the rect
         angle_degrees = -math.degrees(self.theta)
         rotated_image = pygame.transform.rotozoom(self.original_image, angle_degrees, 0.4)
-        
         self.image = rotated_image
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
-
+    #draw
     def draw(self, screen):
         screen.blit(self.image, self.rect)
