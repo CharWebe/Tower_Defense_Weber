@@ -1,6 +1,6 @@
 import pygame.font
 
-#Button class from book
+#Button class from book (p.280)
 class Button:
 
     def __init__(self,screen,msg):
@@ -21,11 +21,12 @@ class Button:
         self._prep_msg(msg)
 
     def _prep_msg(self, msg):
-        
+        #Turn Message into rendered image and center text on button
         self.msg_image = self.font.render(msg,True, self.text_color, self.button_color)
         self.msg_image_rect = self.msg_image.get_rect()
         self.msg_image_rect.center = self.rect.center
 
     def draw_button(self):
+        #Draw blank button then add message
         self.screen.fill(self.button_color, self.rect)
         self.screen.blit(self.msg_image, self.msg_image_rect)

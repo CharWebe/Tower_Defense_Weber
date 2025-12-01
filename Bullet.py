@@ -33,7 +33,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.center = (self.x, self.y)
 
         #Sound variable
-        self.hit_sound = pygame.mixer.Sound('')
+        self.hit_sound = pygame.mixer.Sound('kenney_tower-defense-top-down/Audio/explosionCrunch_000.ogg')
 
     #moves shell across screen
     def update(self,HitCount):
@@ -56,6 +56,8 @@ class Bullet(pygame.sprite.Sprite):
         if colliding_enemy:
             #remove shell
             self.kill()
+            #play sound
+            self.hit_sound.play()
             for c in colliding_enemy:
                 collision_pos = self.rect.center
                 #removes enemy sprite / blits fire at collision spot

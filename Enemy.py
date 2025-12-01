@@ -39,10 +39,11 @@ class EnemySoldier(pygame.sprite.Sprite):
         self.hitpoints = 1
 
     def upgrade(self):
-        #function to upgrade enemy making difficulty harder
+        #function to upgrade enemy making difficulty harder, <NEEDS WORK
         self.image = self.upgraded_image
         self.rect = self.image.get_rect()
         self.hitpoints = 3
+
 
     def get_theta(self):
         # calculate the theta in radians to the player
